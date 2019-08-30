@@ -1,0 +1,42 @@
+{
+  //Use the recommended code guidelines
+  "extends": [
+    "eslint:recommended",
+    "google"
+  ],
+  "parserOptions": {
+    //Enable ES8 support
+    "ecmaVersion": 8,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "env": {
+    //Set the environment to node
+    "node": true,
+    "mocha": true
+  },
+  "globals": {
+    "Promise": true
+  },
+  "rules": {
+    "guard-for-in": 0,
+    //Allow console statements
+    "no-console": 0,
+    //Ignore linebreak-style. Git does a proper conversion.
+    "linebreak-style": 0,
+    //Only use single quotes
+    "curly": [
+      "error",
+      "all"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "max-len": [
+      "error",
+      200
+    ]
+  }
+}

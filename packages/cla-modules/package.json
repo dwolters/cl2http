@@ -1,0 +1,23 @@
+{
+  "name": "cla-modules",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "basic-auth": "^2.0.0",
+    "camelcase": "^4.1.0",
+    "csv-parse": "^2.0.4",
+    "fs-promise": "^2.0.3",
+    "funcster": "0.0.5",
+    "jsonpath-plus": "^0.20.1",
+    "querystring": "^0.2.0",
+    "ssh2": "^0.6.0",
+    "stdin": "0.0.1",
+    "type-is": "^1.6.18"
+  }
+}

@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: My first serverless application.
+
+Resources:
+
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: test
+      DefinitionUri: test/test.swagger.json
+
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: fn.handler
+      Runtime: nodejs6.10
+      Environment:
+        Variables:
+          SPEC: test/test.swagger.json
+      Events:
+        HttpMethods:
+          Type: Api
+          Properties:
+            Path: /test/httpMethods
+            Method: get
+            RestApiId: ApiGateway
+        PathParams:
+          Type: Api
+          Properties:
+            Path: /test/pathParams/{pathParam1}/divider/{pathParam2}
+            Method: get
+            RestApiId: ApiGateway
+        BasicAuth:
+          Type: Api
+          Properties:
+              Path: /test/auth/basicauth
+              Method: get
+              RestApiId: ApiGateway

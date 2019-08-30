@@ -1,0 +1,15 @@
+{
+  "name": "cla-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "sam local start-api"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cla-modules": "^1.0.0",
+    "jsonfile": "^4.0.0"
+  }
+}

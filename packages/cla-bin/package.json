@@ -1,0 +1,21 @@
+{
+  "name": "cla-bin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "bin": {
+    "cl2http": "main.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cla-modules": "^1.0.0",
+    "commander": "^2.15.0",
+    "jsonfile": "^4.0.0",
+    "recursive-copy": "^2.0.9",
+    "rimraf": "^2.6.2"
+  }
+}

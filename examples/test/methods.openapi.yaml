@@ -1,0 +1,30 @@
+paths:
+  '/httpMethods':
+    get:
+      x-cli:
+        command: echo Hello World
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: text/plain
+    post:
+      x-cli:
+        command: echo Hello World
+      responses:
+        200:
+          description: ok
+    put:
+      x-cli:
+        command: echo Hello World
+      responses:
+        200:
+          description: ok
+    delete:
+      x-cli:
+        command: echo Hello World
+      responses:
+        200:
+          description: ok
+    # TODO: other methods

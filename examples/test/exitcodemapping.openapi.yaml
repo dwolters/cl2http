@@ -1,0 +1,20 @@
+x-transforms:
+  someTransform:
+    originalValue: transformedValue
+
+paths:
+  '/default200':
+    get:
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js exit 0
+  '/default500':
+    get:
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js exit 1
+  '/1map404':
+    get:
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js exit 1
+      responses:
+        404:
+          x-code: 1

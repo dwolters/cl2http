@@ -1,0 +1,373 @@
+x-transforms:
+  someTransform:
+    originalValue: transformedValue
+
+paths:
+  '/headerParams':
+    get:
+      parameters:
+        -
+          name: test-parameter
+          in: header
+          required: false
+          schema:
+            type: string
+          style: simple
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${=testParameter}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+
+  '/queryParams':
+    get:
+      parameters:
+        -
+          name: testParameter
+          in: query
+          required: true
+          schema:
+            type: string
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${=testParameter}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+
+  '/body/text':
+    post:
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+        required: true
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${=body}        
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+  '/body/transform':
+    post:
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+            x-transform:
+              TEXT: text
+        required: true        
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:body}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+  '/body/json/list':
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:body..name}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+  '/body/json/joined':
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:body..name| }
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json              
+  '/body/json/valueAsArray':
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${=body.name}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+  '/body/json/value':
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:body.name}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+  '/body/regex/value':
+    post:
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+        required: true
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:body/[0-9]+/g}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+  '/body/regex/list/groupSelector':
+    post:
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+        required: true
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:body/num([0-9])/$1}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json 
+  '/body/regex/list':
+    post:
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+        required: true
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:body/([0-9]+)/g| }
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json    
+  '/param/input':
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+      x-cli:
+        input: "${:body.first} ${:body.second}"
+        command: node packages/cla-express/test/bin/test-tool.js echo
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: text/plain
+  '/param/input/transform':
+    post:
+      requestBody:
+        content:
+          text/plain:
+            x-transform: 'function(a) { return a.toLowerCase(); }'
+            schema:
+              type: string
+          application/json:
+            x-transform: 'function(x) { return x.foo; }'
+            schema:
+              type: string
+        required: true
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js echo
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: text/plain              
+  '/param/output':
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js echo
+      responses:
+        200:
+          description: ok
+          content:
+            text/plain:
+              x-value: "${:body.first} ${:body.second}"
+              schema:
+                type: string
+  '/param/output/transform':
+    post:
+      parameters:
+        - name: Accept
+          in: header
+          required: false
+          schema:
+            type: string
+          style: simple
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+        required: true
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js echo
+      responses:
+        200:
+          description: ok
+          content:
+            text/plain:
+              x-transform: 'function(a) { return a.toLowerCase(); }'
+              schema:
+                type: string
+            application/json:
+              x-transform: 'function(a) { return {text: a}; }'
+              schema:
+                type: string
+  '/pathParams/{pathParam1}/divider/{pathParam2}':
+    get:
+      parameters:
+        -
+          name: pathParam1
+          in: path
+          required: true
+          schema:
+            type: string
+          style: simple
+        -
+          name: pathParam2
+          in: path
+          required: true
+          schema:
+            type: string
+          style: simple
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${=pathParam1} -o ${:pathParam2}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+
+  '/parameterTransform/dictionaryTransform':
+    get:
+      parameters:
+        -
+          name: testParameter
+          in: header
+          required: false
+          schema:
+            type: string
+          style: simple
+          x-transform:
+            originalValue: transformedValue
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:testparameter} -o ${=testparameter}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+  '/parameterTransform/noTransform':
+    post:
+      parameters:
+        -
+          name: testparameter
+          in: header
+          required: false
+          schema:
+            type: string
+          style: simple
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:testparameter} -o ${=testparameter}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+  '/parameterTransform/functionTransform':
+    post:
+      parameters:
+        -
+          name: testparameter
+          in: header
+          required: false
+          schema:
+            type: string
+          x-transform: 'function(a) { return a.toLowerCase(); }'
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:testparameter} -o ${=testparameter}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+  '/parameterTransform/referencedTransform':
+    get:
+      parameters:
+        -
+          name: testparameter
+          in: query
+          required: false
+          schema:
+            type: string
+          x-transform: someTransform
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:testparameter} -o ${=testparameter}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json

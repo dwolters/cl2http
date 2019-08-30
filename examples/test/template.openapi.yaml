@@ -1,0 +1,11 @@
+openapi: '3.0.1'
+info:
+  version: 1.0.0
+  title: Test Service
+  description: Testing `cli-adapter`.
+servers:
+  -
+    url: http://localhost:8000/{basePath}
+    variables:
+      basePath:
+        default: 'test'

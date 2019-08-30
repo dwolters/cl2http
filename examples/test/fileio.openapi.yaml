@@ -1,0 +1,43 @@
+paths:
+  '/fileio/input':
+    post:
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+      x-cli:
+        bodyToFile: true
+        command: node packages/cla-express/test/bin/test-tool.js fileCommand -i ${:inputFile}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+
+  '/fileio':
+    post:
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+      x-cli:
+        bodyToFile: true
+        fileToBody: true
+        command: node packages/cla-express/test/bin/test-tool.js fileCommand -i ${:inputFile} -o ${=outputFile}
+      responses:
+        200:
+          description: ok
+
+  '/fileio/static':
+    get:
+      x-cli:
+        outputFileName: 'examples/test/json/fileio.openapi.json'
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: text/plain

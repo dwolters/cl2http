@@ -1,0 +1,48 @@
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      x-connector:
+        type: csv
+        source: examples/test/data/apikeys.csv
+        index: 0
+
+paths:
+  '/auth/bearer':
+    post:
+      security:
+        - bearer: []
+      parameters:
+        -
+          name: test
+          in: query
+          required: true
+          schema:
+            type: string
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:test}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+
+  '/noauth':
+    get:
+      parameters:
+        -
+          name: test
+          in: query
+          required: true
+          schema:
+            type: string
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:test}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json

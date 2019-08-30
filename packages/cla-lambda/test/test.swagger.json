@@ -1,0 +1,134 @@
+{
+    "info": {
+        "version": "1.0.0",
+        "title": "Test Service",
+        "description": "Testing `cli-adapter`."
+    },
+    "paths": {
+        "/httpMethods": {
+            "get": {
+                "x-cli": {
+                    "command": "echo Hello World",
+                    "headers": {
+                        "Content-Type": "text/plain"
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            },
+            "post": {
+                "x-cli": {
+                    "command": "echo Hello World"
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            },
+            "put": {
+                "x-cli": {
+                    "command": "echo Hello World"
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            },
+            "delete": {
+                "x-cli": {
+                    "command": "echo Hello World"
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            }
+        },
+        "/pathParams/{pathParam1}/divider/{pathParam2}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "pathParam1",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "pathParam2",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "x-cli": {
+                    "command": "echo pathParam1: ${=pathParam1}, pathParam2: ${=pathParam2}",
+                    "headers": {
+                        "Content-Type": "text/plain"
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            }
+        },
+        "/auth/basicauth": {
+            "get": {
+                "security": [
+                    {
+                        "basicauth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "test",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "x-cli": {
+                    "command": "echo ${=test}",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "basicauth": {
+            "type": "basic",
+            "x-connector": {
+                "type": "csv",
+                "source": "test/users.csv",
+                "index": "username",
+                "mapping": {
+                    "username": "username",
+                    "salt": "salt",
+                    "password": "pwd"
+                },
+                "options": {
+                    "comment": "#",
+                    "columns": true,
+                    "trim": true
+                }
+            }
+        }
+    },
+    "swagger": "2.0",
+    "basePath": "/test",
+    "host": "localhost:8000"
+}

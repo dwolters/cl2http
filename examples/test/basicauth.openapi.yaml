@@ -1,0 +1,55 @@
+components:
+  securitySchemes:
+    basicauth:
+      type: http
+      scheme: basic
+      x-connector:
+        type: csv
+        source: examples/test/data/users.csv
+        index: username
+        mapping:
+          username: username
+          salt: salt
+          password: pwd
+        options:
+          comment: '#'
+          columns: true
+          trim: true
+
+paths:
+  '/auth/basicauth':
+    get:
+      security:
+        - basicauth: []
+      parameters:
+        -
+          name: test
+          in: query
+          required: true
+          schema:
+            type: string
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:test}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+  '/noauth':
+    get:
+      parameters:
+        -
+          name: test
+          in: query
+          required: true
+          schema:
+            type: string
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:test}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json

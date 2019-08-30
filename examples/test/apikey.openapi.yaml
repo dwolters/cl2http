@@ -1,0 +1,77 @@
+components:
+  securitySchemes:
+    querykey:
+      type: apiKey
+      name: api_key
+      in: query
+      x-connector:
+        type: csv
+        source: examples/test/data/apikeys.csv
+        index: 0
+    headerkey:
+      type: apiKey
+      name: api_key
+      in: header
+      x-connector:
+        type: csv
+        source: examples/test/data/apikeys.csv
+        index: 0
+
+paths:
+  '/auth/apikey/query':
+    get:
+      security:
+        - querykey: []
+      parameters:
+        -
+          name: test
+          in: query
+          required: true
+          schema:
+            type: string
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:test}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+
+  '/auth/apikey/header':
+    get:
+      security:
+        - headerkey: []
+      parameters:
+        -
+          name: test
+          in: header
+          required: false
+          schema:
+            type: string
+          style: simple
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:test}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
+  '/noauth':
+    get:
+      parameters:
+        -
+          name: test
+          in: query
+          required: true
+          schema:
+            type: string
+      x-cli:
+        command: node packages/cla-express/test/bin/test-tool.js argCommand -r ${:test}
+      responses:
+        200:
+          description: ok
+          headers:
+            Content-Type: 
+              x-value: application/json
