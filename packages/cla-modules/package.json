@@ -11,7 +11,7 @@
   "dependencies": {
     "basic-auth": "^2.0.0",
     "camelcase": "^4.1.0",
-    "csv-parse": "^2.0.4",
+    "csv-parse": "^4.4.6",
     "fs-promise": "^2.0.3",
     "funcster": "0.0.5",
     "jsonpath-plus": "^0.20.1",
